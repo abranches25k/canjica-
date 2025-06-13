@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de São João</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: #fff3e0 url('https://i.imgur.com/YqpYX6N.png') repeat-x top;
+      background-size: contain;
+      color: #5d4037;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #d84315;
+      font-size: 2.5em;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff8e1;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      background: #ffd54f;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ffca28;
+    }
+    .milho-bar {
+      height: 30px;
+      width: 100%;
+      background: #e0e0e0;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .milho-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffeb3b, #fdd835);
+      background-image: url('https://i.imgur.com/fZ1Z5Sp.png');
+      background-size: cover;
+      transition: width 0.5s ease-in-out;
+    }
+    .result {
+      font-size: 1.3em;
+      margin-top: 20px;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz de São João 🎉</h1>
+  <div class="quiz-container">
+    <div class="milho-bar"><div class="milho-fill" id="milho"></div></div>
+    <div id="quiz"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "Qual dessas comidas é típica da festa junina?",
+        options: ["Sushi", "Pizza", "Canjica", "Lasanha"],
+        answer: 2
+      },
+      {
+        q: "Como é chamado o casamento falso que acontece nas festas juninas?",
+        options: ["Casamento caipira", "Casamento relâmpago", "Casamento da roça", "Casamento do milho"],
+        answer: 0
+      },
+      {
+        q: "Qual grão é o símbolo das festas juninas?",
+        options: ["Trigo", "Soja", "Milho", "Feijão"],
+        answer: 2
+      },
+      {
+        q: "Em que mês, tradicionalmente, acontece a festa junina?",
+        options: ["Maio", "Junho", "Julho", "Dezembro"],
+        answer: 1
+      },
+      {
+        q: "Qual santo é o principal homenageado nas festas juninas?",
+        options: ["Santo Antônio", "São João", "São José", "São Pedro"],
+        answer: 1
+      },
+      {
+        q: "O que simboliza a fogueira nas festas juninas?",
+        options: ["Uma competição", "Um sinal de guerra", "Um símbolo de acolhimento e fé", "Um jogo"],
+        answer: 2
+      },
+      {
+        q: "Qual dessas danças é tradicional nas festas juninas?",
+        options: ["Samba", "Forró", "Axé", "Hip hop"],
+        answer: 1
+      },
+      {
+        q: "Como se chama a dança coletiva que simula um casamento e uma quadrilha?",
+        options: ["Valsa", "Quadrilha", "Frevo", "Congada"],
+        answer: 1
+      },
+      {
+        q: "Qual personagem não pode faltar na quadrilha?",
+        options: ["O padre", "O mágico", "O palhaço", "O rei"],
+        answer: 0
+      },
+      {
+        q: "Qual traje é comum nas festas juninas?",
+        options: ["Roupas formais", "Fantasias de super-heróis", "Roupas xadrez, vestido de chita e chapéu de palha", "Terno e gravata"],
+        answer: 2
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const quiz = document.getElementById("quiz");
+    const milho = document.getElementById("milho");
+    const result = document.getElementById("result");
+
+    function loadQuestion() {
+      if (current >= questions.length) {
+        result.innerHTML = `<strong>Você acertou ${score} de ${questions.length} perguntas!</strong><br>${score >= 7 ? 'Você é o Rei do Arraiá! 👑' : 'Tá precisando dançar mais quadrilha, hein? 😅'}`;
+        quiz.innerHTML = "";
+        return;
+      }
+      const q = questions[current];
+      quiz.innerHTML = `<div class="question">
+        <h3>${q.q}</h3>
+        ${q.options.map((opt, i) => `<button onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+      </div>`;
+    }
+
+    function checkAnswer(i) {
+      if (i === questions[current].answer) score++;
+      current++;
+      milho.style.width = `${(score / questions.length) * 100}%`;
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
