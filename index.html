@@ -8,82 +8,77 @@
     body {
       margin: 0;
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: url('fundo-junino.png') no-repeat center center fixed;
+      background: url('fundo-junino.png') no-repeat center top;
       background-size: cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
 
     .quiz-container {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 0 15px #00000050;
-      max-width: 400px;
+      box-shadow: 0 0 10px #00000055;
       width: 100%;
+      max-width: 400px;
       text-align: center;
     }
 
     h1 {
       color: #B22222;
-      font-size: 1.8em;
-      margin-bottom: 10px;
+      font-size: 1.6em;
     }
 
     .question {
       font-size: 1.2em;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
 
     .option {
-      background: #FFD700;
+      background-color: #FFD700;
       border: 2px solid #DAA520;
       padding: 12px;
       margin: 10px 0;
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: 0.3s;
     }
 
     .option:hover {
-      background: #FFC107;
+      background-color: #FFC107;
     }
 
     .progress-bar {
-      width: 100%;
       height: 30px;
-      background: #eee;
-      border-radius: 30px;
-      overflow: hidden;
+      background: #fff;
+      border-radius: 20px;
       margin-top: 20px;
+      overflow: hidden;
       position: relative;
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(to right, #FFD700, #FFA500);
+      background: linear-gradient(to right, #FFA500, #FF4500);
       width: 0%;
-      border-radius: 30px;
-      transition: width 0.5s;
+      transition: width 0.4s;
     }
 
     .milho-icon {
       position: absolute;
-      top: -10px;
+      top: -12px;
       left: 0;
       width: 30px;
-      height: 30px;
     }
 
     #btnSaque {
       display: none;
       margin-top: 20px;
       padding: 10px 20px;
-      background: green;
+      background-color: green;
       color: white;
       border: none;
       border-radius: 10px;
@@ -102,16 +97,14 @@
 
   <div class="quiz-container">
     <h1>🎉 Quiz Junino 🎉</h1>
-    <div class="question" id="question">
-      Qual é o prato típico mais famoso da festa junina?
-    </div>
+    <div class="question" id="question">Qual é o prato típico mais famoso da festa junina?</div>
     <div class="option" onclick="verificarResposta(true)">Canjica</div>
     <div class="option" onclick="verificarResposta(false)">Sushi</div>
     <div class="option" onclick="verificarResposta(false)">Feijoada</div>
     <div class="option" onclick="verificarResposta(false)">Hambúrguer</div>
 
     <div class="progress-bar">
-      <img src="https://i.imgur.com/gXoG1ZJ.png" class="milho-icon" id="milhoIcon" />
+      <img src="https://i.imgur.com/gXoG1ZJ.png" class="milho-icon" id="milhoIcon">
       <div class="progress-fill" id="progressFill"></div>
     </div>
 
@@ -132,12 +125,13 @@
           setTimeout(() => {
             document.getElementById('btnSaque').style.display = 'block';
             document.getElementById('question').innerText = 'Parabéns! Você completou o quiz!';
-          }, 1000);
+          }, 800);
         }
       } else {
         alert('Resposta errada! Tente outra.');
       }
     }
   </script>
+
 </body>
 </html>
