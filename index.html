@@ -1,160 +1,231 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quiz de São João</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive;
-      background: #fff3e0 url('https://i.imgur.com/YqpYX6N.png') repeat-x top;
-      background-size: contain;
-      color: #5d4037;
       margin: 0;
-      padding: 20px;
+      font-family: 'Comic Sans MS', cursive;
+      background: #ffe8c6 url('https://i.imgur.com/vgLKVd9.png') repeat;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header {
       text-align: center;
+      padding: 30px 20px;
+      background: #ffcd4b;
+      border-bottom: 5px dashed #da781f;
     }
-    h1 {
-      color: #d84315;
-      font-size: 2.5em;
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #b84c00;
     }
-    .quiz-container {
+
+    #quiz-container {
       max-width: 600px;
       margin: 20px auto;
       background: #fff8e1;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border: 5px dashed #ffb347;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
     }
+
     .question {
-      margin-bottom: 20px;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
     }
-    button {
+
+    .options button {
       display: block;
       width: 100%;
-      margin: 5px 0;
       padding: 10px;
-      font-size: 1em;
-      border: none;
-      background: #ffd54f;
-      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #ffd966;
+      border: 2px solid #e6ac00;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.3s;
     }
-    button:hover {
-      background: #ffca28;
+
+    .options button:hover {
+      background: #ffe98d;
     }
+
+    #progress-container {
+      margin: 30px 0;
+      text-align: center;
+    }
+
     .milho-bar {
-      height: 30px;
+      height: 50px;
       width: 100%;
-      background: #e0e0e0;
-      border-radius: 20px;
+      background: #eee;
+      border-radius: 30px;
+      border: 2px solid #ffb347;
+      position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
     }
+
     .milho-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #ffeb3b, #fdd835);
-      background-image: url('https://i.imgur.com/fZ1Z5Sp.png');
-      background-size: cover;
-      transition: width 0.5s ease-in-out;
+      background: linear-gradient(to right, #ffde59, #f7b733);
+      border-radius: 30px;
+      transition: width 0.5s;
     }
-    .result {
-      font-size: 1.3em;
-      margin-top: 20px;
-      color: #2e7d32;
+
+    .milho-icon {
+      position: absolute;
+      top: -30px;
+      left: 10px;
+      font-size: 40px;
     }
+
+    #final-screen, #loading-screen, #saque-screen {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .saque-btn {
+      background: #28a745;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .bandeirinhas {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100px;
+      background: url('https://i.imgur.com/pPMc9Zz.png') repeat-x;
+      background-size: contain;
+    }
+
   </style>
 </head>
 <body>
-  <h1>Quiz de São João 🎉</h1>
-  <div class="quiz-container">
-    <div class="milho-bar"><div class="milho-fill" id="milho"></div></div>
-    <div id="quiz"></div>
-    <div class="result" id="result"></div>
+
+<div class="bandeirinhas"></div>
+<header>
+  <h1>🎉 Quiz Junino - Teste seus Saberes! 🎉</h1>
+</header>
+
+<div id="quiz-container">
+  <div class="question" id="question"></div>
+  <div class="options" id="options"></div>
+  
+  <div id="progress-container">
+    <div class="milho-bar">
+      <div class="milho-fill" id="milhoFill"></div>
+      <div class="milho-icon">🌽</div>
+    </div>
   </div>
+</div>
 
-  <script>
-    const questions = [
-      {
-        q: "Qual dessas comidas é típica da festa junina?",
-        options: ["Sushi", "Pizza", "Canjica", "Lasanha"],
-        answer: 2
-      },
-      {
-        q: "Como é chamado o casamento falso que acontece nas festas juninas?",
-        options: ["Casamento caipira", "Casamento relâmpago", "Casamento da roça", "Casamento do milho"],
-        answer: 0
-      },
-      {
-        q: "Qual grão é o símbolo das festas juninas?",
-        options: ["Trigo", "Soja", "Milho", "Feijão"],
-        answer: 2
-      },
-      {
-        q: "Em que mês, tradicionalmente, acontece a festa junina?",
-        options: ["Maio", "Junho", "Julho", "Dezembro"],
-        answer: 1
-      },
-      {
-        q: "Qual santo é o principal homenageado nas festas juninas?",
-        options: ["Santo Antônio", "São João", "São José", "São Pedro"],
-        answer: 1
-      },
-      {
-        q: "O que simboliza a fogueira nas festas juninas?",
-        options: ["Uma competição", "Um sinal de guerra", "Um símbolo de acolhimento e fé", "Um jogo"],
-        answer: 2
-      },
-      {
-        q: "Qual dessas danças é tradicional nas festas juninas?",
-        options: ["Samba", "Forró", "Axé", "Hip hop"],
-        answer: 1
-      },
-      {
-        q: "Como se chama a dança coletiva que simula um casamento e uma quadrilha?",
-        options: ["Valsa", "Quadrilha", "Frevo", "Congada"],
-        answer: 1
-      },
-      {
-        q: "Qual personagem não pode faltar na quadrilha?",
-        options: ["O padre", "O mágico", "O palhaço", "O rei"],
-        answer: 0
-      },
-      {
-        q: "Qual traje é comum nas festas juninas?",
-        options: ["Roupas formais", "Fantasias de super-heróis", "Roupas xadrez, vestido de chita e chapéu de palha", "Terno e gravata"],
-        answer: 2
-      }
-    ];
+<div id="loading-screen">
+  <h2>Carregando seu prêmio... 🎁</h2>
+  <p>Aguarde um momento...</p>
+</div>
 
-    let current = 0;
-    let score = 0;
-    const quiz = document.getElementById("quiz");
-    const milho = document.getElementById("milho");
-    const result = document.getElementById("result");
+<div id="saque-screen">
+  <h2>🎉 Parabéns! Você ganhou R$ 297,00 🎉</h2>
+  <button class="saque-btn" onclick="alert('Redirecionando para o saque...')">Sacar Agora</button>
+</div>
 
-    function loadQuestion() {
-      if (current >= questions.length) {
-        result.innerHTML = `<strong>Você acertou ${score} de ${questions.length} perguntas!</strong><br>${score >= 7 ? 'Você é o Rei do Arraiá! 👑' : 'Tá precisando dançar mais quadrilha, hein? 😅'}`;
-        quiz.innerHTML = "";
-        return;
-      }
-      const q = questions[current];
-      quiz.innerHTML = `<div class="question">
-        <h3>${q.q}</h3>
-        ${q.options.map((opt, i) => `<button onclick="checkAnswer(${i})">${opt}</button>`).join('')}
-      </div>`;
+<script>
+  const questions = [
+    {
+      question: "Qual é o prato típico mais famoso da festa junina?",
+      options: ["Feijoada", "Canjica", "Sushi", "Hambúrguer"],
+      answer: "Canjica"
+    },
+    {
+      question: "Qual roupa típica é usada na festa junina?",
+      options: ["Farda", "Traje caipira", "Terno", "Jeans e camiseta"],
+      answer: "Traje caipira"
+    },
+    {
+      question: "Qual é a tradicional dança da festa junina?",
+      options: ["Valsa", "Funk", "Quadrilha", "Samba"],
+      answer: "Quadrilha"
+    },
+    {
+      question: "Qual desses itens é usado na decoração junina?",
+      options: ["Bola de Natal", "Abóbora de Halloween", "Bandeirinhas coloridas", "Fitas de cetim"],
+      answer: "Bandeirinhas coloridas"
+    },
+    {
+      question: "Qual santo é homenageado no dia 24 de junho?",
+      options: ["São Pedro", "Santo Antônio", "São João", "São Paulo"],
+      answer: "São João"
     }
+  ];
 
-    function checkAnswer(i) {
-      if (i === questions[current].answer) score++;
-      current++;
-      milho.style.width = `${(score / questions.length) * 100}%`;
+  let currentQuestion = 0;
+  let correctAnswers = 0;
+
+  const questionEl = document.getElementById("question");
+  const optionsEl = document.getElementById("options");
+  const milhoFill = document.getElementById("milhoFill");
+  const loadingScreen = document.getElementById("loading-screen");
+  const saqueScreen = document.getElementById("saque-screen");
+  const quizContainer = document.getElementById("quiz-container");
+
+  function loadQuestion() {
+    const q = questions[currentQuestion];
+    questionEl.textContent = q.question;
+    optionsEl.innerHTML = "";
+    q.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = () => checkAnswer(opt);
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selected) {
+    if (selected === questions[currentQuestion].answer) {
+      correctAnswers++;
+      updateProgress();
+    }
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
       loadQuestion();
+    } else {
+      showLoading();
     }
+  }
 
-    loadQuestion();
-  </script>
+  function updateProgress() {
+    const percent = (correctAnswers / questions.length) * 100;
+    milhoFill.style.width = percent + "%";
+  }
+
+  function showLoading() {
+    quizContainer.style.display = "none";
+    loadingScreen.style.display = "block";
+    setTimeout(() => {
+      loadingScreen.style.display = "none";
+      saqueScreen.style.display = "block";
+    }, 2500);
+  }
+
+  // Inicializa
+  loadQuestion();
+</script>
 </body>
 </html>
