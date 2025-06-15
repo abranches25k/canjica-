@@ -1,180 +1,118 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quiz de São João</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Junino</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: url('Design sem nome.png') no-repeat center center fixed;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDgAAAeACAYAAAArYecKAAEAAElEQVR4nGT9za5lW7MtBrWI3secK/d3rg0lSxgQxiAkJKgghATIUOAVELwLZV6CN+ABzAMgC6gaS1QwCAkJCghd/HN3rjVH7xEUWovoI8/dR3n2/jJzzTlG/4mfFi1a2P/5f/1fza9fb7y/3nAzfH5u3D8f+Bx4fb3x+noDABJA7MD984P7+wfujkt/bmYwA8wNfl0Y80JGYP3+wfr9g...') no-repeat center center fixed;
       background-size: cover;
-      color: #333;
     }
 
     .container {
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
       padding: 20px;
-      background-color: rgba(255,255,255,0.9);
+      background-color: rgba(255, 255, 255, 0.8);
       border-radius: 15px;
-      margin-top: 40px;
+      margin-top: 30px;
     }
 
     h1 {
       text-align: center;
-      color: #b33;
+      color: #8B0000;
     }
 
     .question {
-      font-size: 1.2em;
+      font-size: 20px;
       margin-bottom: 15px;
     }
 
-    .options button {
+    .option {
       display: block;
-      width: 100%;
-      margin: 8px 0;
+      background-color: #FFD700;
       padding: 10px;
-      font-size: 1em;
+      margin-bottom: 10px;
       border: none;
-      border-radius: 8px;
-      background-color: #ffd966;
+      border-radius: 10px;
       cursor: pointer;
     }
 
-    .options button:hover {
-      background-color: #ffcc33;
+    .progress-bar {
+      height: 20px;
+      background-color: #FFD700;
+      width: 0%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: width 0.3s;
     }
 
     .progress-container {
-      height: 20px;
-      width: 100%;
-      background-color: #eee;
+      background-color: #fff;
       border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0;
-      background-color: #fcd116;
-      transition: width 0.3s ease;
-    }
-
-    .final {
-      text-align: center;
-      font-size: 1.3em;
-      margin-top: 20px;
-      color: #070;
+      padding: 3px;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
+    <h1>🎉 Quiz Junino 🎉</h1>
     <div class="progress-container">
-      <div class="progress-bar" id="progress-bar"></div>
+      <div class="progress-bar" id="progressBar"></div>
     </div>
-    <h1>Quiz de São João</h1>
     <div id="quiz">
-      <div class="question" id="question"></div>
-      <div class="options" id="options"></div>
+      <!-- Perguntas serão carregadas aqui -->
     </div>
-    <div class="final" id="final" style="display:none;"></div>
   </div>
 
   <script>
-    const quizData = [
-      {
-        question: "Qual comida típica é mais tradicional na festa junina?",
-        options: ["Feijoada", "Pipoca", "Macarrão", "Pizza"],
-        answer: "Pipoca"
-      },
-      {
-        question: "Qual personagem típico aparece nas festas juninas?",
-        options: ["Papai Noel", "Caipira", "Bruxa", "Pirata"],
-        answer: "Caipira"
-      },
-      {
-        question: "Qual dança é símbolo das festas juninas?",
-        options: ["Samba", "Quadrilha", "Forró universitário", "Axé"],
-        answer: "Quadrilha"
-      },
-      {
-        question: "Qual dessas é uma bebida típica de festa junina?",
-        options: ["Água de coco", "Quentão", "Refrigerante", "Caipirinha"],
-        answer: "Quentão"
-      },
-      {
-        question: "O que é comum nas roupas de festa junina?",
-        options: ["Ternos e gravatas", "Roupas rasgadas e remendadas", "Fantasias de heróis", "Fardas escolares"],
-        answer: "Roupas rasgadas e remendadas"
-      },
-      {
-        question: "O que representa a fogueira na festa junina?",
-        options: ["Aquecimento", "Tradição religiosa", "Cozinhar", "Iluminação"],
-        answer: "Tradição religiosa"
-      },
-      {
-        question: "Em que mês geralmente acontece a festa junina?",
-        options: ["Julho", "Maio", "Junho", "Agosto"],
-        answer: "Junho"
-      },
-      {
-        question: "Qual é um doce típico da festa junina?",
-        options: ["Bolo de cenoura", "Pé de moleque", "Pudim", "Brigadeiro"],
-        answer: "Pé de moleque"
-      },
-      {
-        question: "Qual animal é imitado na dança da quadrilha?",
-        options: ["Cavalo", "Bicho-preguiça", "Papagaio", "Jacaré"],
-        answer: "Cavalo"
-      },
-      {
-        question: "Qual é o nome da festa típica em junho?",
-        options: ["Carnaval", "Festa de Santo Antônio", "Festa Junina", "Dia das Crianças"],
-        answer: "Festa Junina"
-      }
+    const questions = [
+      { q: "Qual é o prato típico mais famoso da festa junina?", a: "Canjica", o: ["Feijoada", "Canjica", "Sushi", "Hambúrguer"] },
+      { q: "Qual dança é tradicional das festas juninas?", a: "Quadrilha", o: ["Forró", "Samba", "Quadrilha", "Axé"] },
+      { q: "Qual item representa fartura nas festas juninas?", a: "Milho", o: ["Arroz", "Milho", "Trigo", "Feijão"] },
+      { q: "Qual personagem é comum na quadrilha?", a: "Noivo", o: ["Padre", "Cavaleiro", "Noivo", "Rei"] },
+      { q: "O que é comum fazer na fogueira de São João?", a: "Pular", o: ["Assar pizza", "Dançar samba", "Pular", "Pintar"] },
+      { q: "Qual doce é feito com amendoim?", a: "Pé de moleque", o: ["Canjica", "Doce de leite", "Pé de moleque", "Cocada"] },
+      { q: "Qual acessório é típico da festa junina?", a: "Chapéu de palha", o: ["Boné", "Boina", "Chapéu de palha", "Tiara"] },
+      { q: "Em que mês ocorrem as festas juninas?", a: "Junho", o: ["Maio", "Junho", "Julho", "Agosto"] },
+      { q: "Qual cor predomina nas bandeirinhas juninas?", a: "Coloridas", o: ["Verde", "Amarela", "Azul", "Coloridas"] },
+      { q: "Qual é o nome do santo homenageado no dia 24 de junho?", a: "São João", o: ["Santo Antônio", "São Pedro", "São Jorge", "São João"] }
     ];
 
     let currentQuestion = 0;
     let score = 0;
 
-    const questionEl = document.getElementById("question");
-    const optionsEl = document.getElementById("options");
-    const progressBar = document.getElementById("progress-bar");
-    const finalEl = document.getElementById("final");
-
     function loadQuestion() {
-      const q = quizData[currentQuestion];
-      questionEl.textContent = q.question;
-      optionsEl.innerHTML = "";
-      q.options.forEach(option => {
-        const btn = document.createElement("button");
-        btn.textContent = option;
-        btn.onclick = () => checkAnswer(option);
-        optionsEl.appendChild(btn);
-      });
-      progressBar.style.width = `${(currentQuestion / quizData.length) * 100}%`;
-    }
-
-    function checkAnswer(option) {
-      if (option === quizData[currentQuestion].answer) score++;
-      currentQuestion++;
-      if (currentQuestion < quizData.length) {
-        loadQuestion();
-      } else {
-        showFinal();
+      const quiz = document.getElementById("quiz");
+      if (currentQuestion >= questions.length) {
+        quiz.innerHTML = `<h2>Você acertou ${score} de ${questions.length} perguntas!</h2>`;
+        return;
       }
+
+      const q = questions[currentQuestion];
+      let html = `<div class="question">${q.q}</div>`;
+      q.o.forEach(option => {
+        html += `<button class="option" onclick="selectAnswer('${option}')">${option}</button>`;
+      });
+      quiz.innerHTML = html;
+      updateProgress();
     }
 
-    function showFinal() {
-      document.getElementById("quiz").style.display = "none";
-      progressBar.style.width = "100%";
-      finalEl.style.display = "block";
-      finalEl.innerHTML = `Você acertou <strong>${score}</strong> de <strong>${quizData.length}</strong> perguntas.`;
+    function selectAnswer(answer) {
+      if (answer === questions[currentQuestion].a) {
+        score++;
+      }
+      currentQuestion++;
+      loadQuestion();
+    }
+
+    function updateProgress() {
+      const progress = (currentQuestion / questions.length) * 100;
+      document.getElementById("progressBar").style.width = progress + "%";
     }
 
     loadQuestion();
