@@ -104,7 +104,6 @@
       margin-top: 30px;
       user-select: none;
     }
-    /* Scroll no mobile para container se necessário */
     @media(max-height:600px){
       body {
         align-items: flex-start;
@@ -165,7 +164,6 @@
 
       const q = questions[currentQuestion];
       let html = `<div class="question">${q.q}</div><div class="options">`;
-      // opções embaralhadas
       const shuffledOptions = shuffleArray([...q.o]);
       shuffledOptions.forEach(option => {
         html += `<button class="option" onclick="selectAnswer(this, '${option}')" type="button">${option}</button>`;
@@ -178,7 +176,6 @@
     function selectAnswer(button, answer) {
       const q = questions[currentQuestion];
       const options = document.querySelectorAll("button.option");
-      // trava todos os botões
       options.forEach(btn => btn.classList.add("disabled"));
       
       if (answer === q.a) {
@@ -187,7 +184,6 @@
       } else {
         button.classList.add("incorrect");
         document.getElementById('soundWrong').play();
-        // mostra o botão correto
         options.forEach(btn => {
           if (btn.textContent === q.a) btn.classList.add("correct");
         });
