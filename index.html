@@ -5,54 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Quiz Junino</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-
   html, body {
     height: 100%;
     margin: 0;
-    font-family: 'Comic Neue', cursive, sans-serif;
-    background-color: #fff3b0; /* cor de fundo caso imagem não carregue */
-    background-image: url('https://i.imgur.com/mRfZK45.jpg');
+    padding: 0;
+    background: url('https://i.imgur.com/mRfZK45.jpg') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
     color: #4B3B00;
   }
 
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    box-sizing: border-box;
-  }
-
-  .container {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
-    width: 100%;
+  .overlay {
+    background-color: rgba(255,255,255,0.85);
     max-width: 480px;
+    margin: 40px auto;
+    border-radius: 20px;
     padding: 20px 30px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    user-select: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
   }
 
   h1 {
     text-align: center;
     color: #b37500;
-    margin-bottom: 10px;
-    text-shadow: 1px 1px 2px #6b4a00;
+    margin-bottom: 15px;
   }
 
   .progress-container {
-    width: 100%;
     background-color: #ffd54f;
     border-radius: 12px;
-    overflow: hidden;
     height: 22px;
-    margin-bottom: 20px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    overflow: hidden;
+    margin-bottom: 25px;
   }
 
   .progress-bar {
@@ -66,7 +49,7 @@
   .question {
     font-size: 1.25rem;
     margin-bottom: 20px;
-    font-weight: 700;
+    font-weight: bold;
     text-align: center;
   }
 
@@ -86,8 +69,8 @@
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(183, 117, 0, 0.4);
     transition: background-color 0.3s ease;
-    user-select: none;
     text-align: center;
+    user-select: none;
   }
 
   button.option:hover:not(.disabled) {
@@ -119,104 +102,90 @@
     font-weight: 700;
     color: #6b4a00;
     margin-top: 30px;
-    user-select: none;
-  }
-
-  @media(max-height:600px){
-    body {
-      align-items: flex-start;
-      padding-top: 30px;
-      padding-bottom: 30px;
-      overflow-y: auto;
-    }
-    .container {
-      box-shadow: none;
-      background-color: rgba(255,255,255,0.95);
-    }
   }
 </style>
 </head>
 <body>
-  <div class="container" role="main">
+  <div class="overlay" role="main">
     <h1>🎉 Quiz Junino 🎉</h1>
     <div class="progress-container" aria-label="Barra de progresso do quiz">
       <div class="progress-bar" id="progressBar"></div>
     </div>
     <div id="quiz">
-      <!-- Perguntas carregadas aqui -->
+      <!-- Perguntas aqui -->
     </div>
     <audio id="soundWrong" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>
   </div>
 
-  <script>
-    const questions = [
-      { q: "Qual é o prato típico mais famoso da festa junina?", a: "Canjica", o: ["Feijoada", "Canjica", "Sushi", "Hambúrguer"] },
-      { q: "Qual dança é tradicional das festas juninas?", a: "Quadrilha", o: ["Forró", "Samba", "Quadrilha", "Axé"] },
-      { q: "Qual item representa fartura nas festas juninas?", a: "Milho", o: ["Arroz", "Milho", "Trigo", "Feijão"] },
-      { q: "Qual personagem é comum na quadrilha?", a: "Noivo", o: ["Padre", "Cavaleiro", "Noivo", "Rei"] },
-      { q: "O que é comum fazer na fogueira de São João?", a: "Pular", o: ["Assar pizza", "Dançar samba", "Pular", "Pintar"] },
-      { q: "Qual doce é feito com amendoim?", a: "Pé de moleque", o: ["Canjica", "Doce de leite", "Pé de moleque", "Cocada"] },
-      { q: "Qual acessório é típico da festa junina?", a: "Chapéu de palha", o: ["Boné", "Boina", "Chapéu de palha", "Tiara"] },
-      { q: "Em que mês ocorrem as festas juninas?", a: "Junho", o: ["Maio", "Junho", "Julho", "Agosto"] },
-      { q: "Qual cor predomina nas bandeirinhas juninas?", a: "Coloridas", o: ["Verde", "Amarela", "Azul", "Coloridas"] },
-      { q: "Qual é o nome do santo homenageado no dia 24 de junho?", a: "São João", o: ["Santo Antônio", "São Pedro", "São Jorge", "São João"] }
-    ];
+<script>
+  const questions = [
+    { q: "Qual é o prato típico mais famoso da festa junina?", a: "Canjica", o: ["Feijoada", "Canjica", "Sushi", "Hambúrguer"] },
+    { q: "Qual dança é tradicional das festas juninas?", a: "Quadrilha", o: ["Forró", "Samba", "Quadrilha", "Axé"] },
+    { q: "Qual item representa fartura nas festas juninas?", a: "Milho", o: ["Arroz", "Milho", "Trigo", "Feijão"] },
+    { q: "Qual personagem é comum na quadrilha?", a: "Noivo", o: ["Padre", "Cavaleiro", "Noivo", "Rei"] },
+    { q: "O que é comum fazer na fogueira de São João?", a: "Pular", o: ["Assar pizza", "Dançar samba", "Pular", "Pintar"] },
+    { q: "Qual doce é feito com amendoim?", a: "Pé de moleque", o: ["Canjica", "Doce de leite", "Pé de moleque", "Cocada"] },
+    { q: "Qual acessório é típico da festa junina?", a: "Chapéu de palha", o: ["Boné", "Boina", "Chapéu de palha", "Tiara"] },
+    { q: "Em que mês ocorrem as festas juninas?", a: "Junho", o: ["Maio", "Junho", "Julho", "Agosto"] },
+    { q: "Qual cor predomina nas bandeirinhas juninas?", a: "Coloridas", o: ["Verde", "Amarela", "Azul", "Coloridas"] },
+    { q: "Qual é o nome do santo homenageado no dia 24 de junho?", a: "São João", o: ["Santo Antônio", "São Pedro", "São Jorge", "São João"] }
+  ];
 
-    let currentQuestion = 0;
-    let score = 0;
+  let currentQuestion = 0;
+  let score = 0;
 
-    function shuffleArray(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function loadQuestion() {
+    const quiz = document.getElementById("quiz");
+    if (currentQuestion >= questions.length) {
+      quiz.innerHTML = `<div class="result" role="alert">Você acertou ${score} de ${questions.length} perguntas!</div>`;
+      return;
     }
 
-    function loadQuestion() {
-      const quiz = document.getElementById("quiz");
-      if (currentQuestion >= questions.length) {
-        quiz.innerHTML = `<div class="result" role="alert">Você acertou ${score} de ${questions.length} perguntas!</div>`;
-        return;
-      }
+    const q = questions[currentQuestion];
+    let html = `<div class="question">${q.q}</div><div class="options">`;
+    const shuffledOptions = shuffleArray([...q.o]);
+    shuffledOptions.forEach(option => {
+      html += `<button class="option" onclick="selectAnswer(this, '${option}')" type="button">${option}</button>`;
+    });
+    html += "</div>";
+    quiz.innerHTML = html;
+    updateProgress();
+  }
 
-      const q = questions[currentQuestion];
-      let html = `<div class="question">${q.q}</div><div class="options">`;
-      const shuffledOptions = shuffleArray([...q.o]);
-      shuffledOptions.forEach(option => {
-        html += `<button class="option" onclick="selectAnswer(this, '${option}')" type="button">${option}</button>`;
+  function selectAnswer(button, answer) {
+    const q = questions[currentQuestion];
+    const options = document.querySelectorAll("button.option");
+    options.forEach(btn => btn.classList.add("disabled"));
+
+    if (answer === q.a) {
+      button.classList.add("correct");
+      score++;
+    } else {
+      button.classList.add("incorrect");
+      document.getElementById('soundWrong').play();
+      options.forEach(btn => {
+        if (btn.textContent === q.a) btn.classList.add("correct");
       });
-      html += "</div>";
-      quiz.innerHTML = html;
-      updateProgress();
     }
 
-    function selectAnswer(button, answer) {
-      const q = questions[currentQuestion];
-      const options = document.querySelectorAll("button.option");
-      options.forEach(btn => btn.classList.add("disabled"));
+    currentQuestion++;
+    setTimeout(loadQuestion, 1200);
+  }
 
-      if (answer === q.a) {
-        button.classList.add("correct");
-        score++;
-      } else {
-        button.classList.add("incorrect");
-        document.getElementById('soundWrong').play();
-        options.forEach(btn => {
-          if (btn.textContent === q.a) btn.classList.add("correct");
-        });
-      }
+  function updateProgress() {
+    const progress = (currentQuestion / questions.length) * 100;
+    document.getElementById("progressBar").style.width = progress + "%";
+  }
 
-      currentQuestion++;
-      setTimeout(loadQuestion, 1200);
-    }
-
-    function updateProgress() {
-      const progress = (currentQuestion / questions.length) * 100;
-      document.getElementById("progressBar").style.width = progress + "%";
-    }
-
-    loadQuestion();
-  </script>
+  loadQuestion();
+</script>
 </body>
 </html>
