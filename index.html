@@ -1,72 +1,134 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Quiz Junino</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
     body {
       margin: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDgAAAeACAYAAAArYecKAAEAAElEQVR4nGT9za5lW7MtBrWI3secK/d3rg0lSxgQxiAkJKgghATIUOAVELwLZV6CN+ABzAMgC6gaS1QwCAkJCghd/HN3rjVH7xEUWovoI8/dR3n2/jJzzTlG/4mfFi1a2P/5f/1fza9fb7y/3nAzfH5u3D8f+Bx4fb3x+noDABJA7MD984P7+wfujkt/bmYwA8wNfl0Y80JGYP3+wfr9g...') no-repeat center center fixed;
+      font-family: 'Comic Neue', cursive, sans-serif;
+      background-image: url('https://i.imgur.com/mRfZK45.jpg');
       background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      height: 100vh;
+      color: #4B3B00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      box-sizing: border-box;
     }
-
     .container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 15px;
-      margin-top: 30px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      user-select: none;
     }
-
     h1 {
       text-align: center;
-      color: #8B0000;
-    }
-
-    .question {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-
-    .option {
-      display: block;
-      background-color: #FFD700;
-      padding: 10px;
+      color: #b37500;
       margin-bottom: 10px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+      text-shadow: 1px 1px 2px #6b4a00;
     }
-
-    .progress-bar {
-      height: 20px;
-      background-color: #FFD700;
-      width: 0%;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      transition: width 0.3s;
-    }
-
     .progress-container {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 3px;
+      width: 100%;
+      background-color: #ffd54f;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 22px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .progress-bar {
+      height: 100%;
+      background-color: #b38500;
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 12px 0 0 12px;
+    }
+    .question {
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    button.option {
+      background-color: #ffd54f;
+      border: none;
+      padding: 14px 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(183, 117, 0, 0.4);
+      transition: background-color 0.3s ease;
+      user-select: none;
+      text-align: center;
+    }
+    button.option:hover:not(.disabled) {
+      background-color: #ffbf00;
+    }
+    button.option.correct {
+      background-color: #b38500;
+      color: #fff;
+      cursor: default;
+      box-shadow: 0 3px 8px #7a5e00;
+    }
+    button.option.incorrect {
+      background-color: #d63447;
+      color: #fff;
+      cursor: default;
+      box-shadow: 0 3px 8px #a12b39;
+    }
+    button.option.disabled {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .result {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #6b4a00;
+      margin-top: 30px;
+      user-select: none;
+    }
+    /* Scroll no mobile para container se necessário */
+    @media(max-height:600px){
+      body {
+        align-items: flex-start;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        overflow-y: auto;
+      }
+      .container {
+        box-shadow: none;
+        background-color: rgba(255,255,255,0.95);
+      }
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
+  <div class="container" role="main">
     <h1>🎉 Quiz Junino 🎉</h1>
-    <div class="progress-container">
+    <div class="progress-container" aria-label="Barra de progresso do quiz">
       <div class="progress-bar" id="progressBar"></div>
     </div>
     <div id="quiz">
-      <!-- Perguntas serão carregadas aqui -->
+      <!-- Perguntas carregadas aqui -->
     </div>
+    <audio id="soundWrong" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>
   </div>
 
   <script>
@@ -82,32 +144,57 @@
       { q: "Qual cor predomina nas bandeirinhas juninas?", a: "Coloridas", o: ["Verde", "Amarela", "Azul", "Coloridas"] },
       { q: "Qual é o nome do santo homenageado no dia 24 de junho?", a: "São João", o: ["Santo Antônio", "São Pedro", "São Jorge", "São João"] }
     ];
-
+    
     let currentQuestion = 0;
     let score = 0;
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
 
     function loadQuestion() {
       const quiz = document.getElementById("quiz");
       if (currentQuestion >= questions.length) {
-        quiz.innerHTML = `<h2>Você acertou ${score} de ${questions.length} perguntas!</h2>`;
+        quiz.innerHTML = `<div class="result" role="alert">Você acertou ${score} de ${questions.length} perguntas!</div>`;
         return;
       }
 
       const q = questions[currentQuestion];
-      let html = `<div class="question">${q.q}</div>`;
-      q.o.forEach(option => {
-        html += `<button class="option" onclick="selectAnswer('${option}')">${option}</button>`;
+      let html = `<div class="question">${q.q}</div><div class="options">`;
+      // opções embaralhadas
+      const shuffledOptions = shuffleArray([...q.o]);
+      shuffledOptions.forEach(option => {
+        html += `<button class="option" onclick="selectAnswer(this, '${option}')" type="button">${option}</button>`;
       });
+      html += "</div>";
       quiz.innerHTML = html;
       updateProgress();
     }
 
-    function selectAnswer(answer) {
-      if (answer === questions[currentQuestion].a) {
+    function selectAnswer(button, answer) {
+      const q = questions[currentQuestion];
+      const options = document.querySelectorAll("button.option");
+      // trava todos os botões
+      options.forEach(btn => btn.classList.add("disabled"));
+      
+      if (answer === q.a) {
+        button.classList.add("correct");
         score++;
+      } else {
+        button.classList.add("incorrect");
+        document.getElementById('soundWrong').play();
+        // mostra o botão correto
+        options.forEach(btn => {
+          if (btn.textContent === q.a) btn.classList.add("correct");
+        });
       }
+
       currentQuestion++;
-      loadQuestion();
+      setTimeout(loadQuestion, 1200);
     }
 
     function updateProgress() {
