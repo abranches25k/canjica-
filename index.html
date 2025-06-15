@@ -1,122 +1,140 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Quiz Junino</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quiz Junino</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    background-color: #fff3b0; /* cor de fundo caso imagem não carregue */
+    background-image: url('https://i.imgur.com/mRfZK45.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #4B3B00;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    padding: 20px 30px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    user-select: none;
+  }
+
+  h1 {
+    text-align: center;
+    color: #b37500;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px #6b4a00;
+  }
+
+  .progress-container {
+    width: 100%;
+    background-color: #ffd54f;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 22px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .progress-bar {
+    height: 100%;
+    background-color: #b38500;
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 12px 0 0 12px;
+  }
+
+  .question {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  button.option {
+    background-color: #ffd54f;
+    border: none;
+    padding: 14px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(183, 117, 0, 0.4);
+    transition: background-color 0.3s ease;
+    user-select: none;
+    text-align: center;
+  }
+
+  button.option:hover:not(.disabled) {
+    background-color: #ffbf00;
+  }
+
+  button.option.correct {
+    background-color: #b38500;
+    color: #fff;
+    cursor: default;
+    box-shadow: 0 3px 8px #7a5e00;
+  }
+
+  button.option.incorrect {
+    background-color: #d63447;
+    color: #fff;
+    cursor: default;
+    box-shadow: 0 3px 8px #a12b39;
+  }
+
+  button.option.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .result {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #6b4a00;
+    margin-top: 30px;
+    user-select: none;
+  }
+
+  @media(max-height:600px){
     body {
-      margin: 0;
-      font-family: 'Comic Neue', cursive, sans-serif;
-      background-image: url('https://i.imgur.com/mRfZK45.jpg');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      height: 100vh;
-      color: #4B3B00;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-      box-sizing: border-box;
+      align-items: flex-start;
+      padding-top: 30px;
+      padding-bottom: 30px;
+      overflow-y: auto;
     }
     .container {
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 480px;
-      padding: 20px 30px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      user-select: none;
+      box-shadow: none;
+      background-color: rgba(255,255,255,0.95);
     }
-    h1 {
-      text-align: center;
-      color: #b37500;
-      margin-bottom: 10px;
-      text-shadow: 1px 1px 2px #6b4a00;
-    }
-    .progress-container {
-      width: 100%;
-      background-color: #ffd54f;
-      border-radius: 12px;
-      overflow: hidden;
-      height: 22px;
-      margin-bottom: 20px;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-    }
-    .progress-bar {
-      height: 100%;
-      background-color: #b38500;
-      width: 0%;
-      transition: width 0.4s ease;
-      border-radius: 12px 0 0 12px;
-    }
-    .question {
-      font-size: 1.25rem;
-      margin-bottom: 20px;
-      font-weight: 700;
-      text-align: center;
-    }
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    button.option {
-      background-color: #ffd54f;
-      border: none;
-      padding: 14px 20px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(183, 117, 0, 0.4);
-      transition: background-color 0.3s ease;
-      user-select: none;
-      text-align: center;
-    }
-    button.option:hover:not(.disabled) {
-      background-color: #ffbf00;
-    }
-    button.option.correct {
-      background-color: #b38500;
-      color: #fff;
-      cursor: default;
-      box-shadow: 0 3px 8px #7a5e00;
-    }
-    button.option.incorrect {
-      background-color: #d63447;
-      color: #fff;
-      cursor: default;
-      box-shadow: 0 3px 8px #a12b39;
-    }
-    button.option.disabled {
-      pointer-events: none;
-      opacity: 0.7;
-    }
-    .result {
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #6b4a00;
-      margin-top: 30px;
-      user-select: none;
-    }
-    @media(max-height:600px){
-      body {
-        align-items: flex-start;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        overflow-y: auto;
-      }
-      .container {
-        box-shadow: none;
-        background-color: rgba(255,255,255,0.95);
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="container" role="main">
@@ -143,7 +161,7 @@
       { q: "Qual cor predomina nas bandeirinhas juninas?", a: "Coloridas", o: ["Verde", "Amarela", "Azul", "Coloridas"] },
       { q: "Qual é o nome do santo homenageado no dia 24 de junho?", a: "São João", o: ["Santo Antônio", "São Pedro", "São Jorge", "São João"] }
     ];
-    
+
     let currentQuestion = 0;
     let score = 0;
 
@@ -177,7 +195,7 @@
       const q = questions[currentQuestion];
       const options = document.querySelectorAll("button.option");
       options.forEach(btn => btn.classList.add("disabled"));
-      
+
       if (answer === q.a) {
         button.classList.add("correct");
         score++;
