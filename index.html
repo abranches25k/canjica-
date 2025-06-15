@@ -1,137 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Junino</title>
   <style>
     body {
       margin: 0;
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: url('https://chat.openai.com/_next/image?url=https%3A%2F%2Ffiles.oaiusercontent.com%2Ffile-MnvNmAWjXDMSTXVo7uTAL8%2Fblob&w=1920&q=75') no-repeat center top;
+      background-image: url('https://i.ibb.co/VHp7TnN/Design-sem-nome.png');
       background-size: cover;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
     }
-
     .quiz-container {
-      background: rgba(255, 255, 255, 0.9);
+      max-width: 90%;
+      margin: 50px auto;
+      background-color: rgba(255, 255, 255, 0.9);
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #00000055;
-      width: 100%;
-      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
       text-align: center;
     }
-
     h1 {
-      color: #B22222;
-      font-size: 1.6em;
+      font-size: 24px;
+      color: #8B0000;
+      margin-bottom: 20px;
     }
-
     .question {
-      font-size: 1.2em;
-      margin: 20px 0;
+      font-size: 18px;
+      margin-bottom: 15px;
     }
-
-    .option {
-      background-color: #FFD700;
-      border: 2px solid #DAA520;
-      padding: 12px;
+    .options button {
+      display: block;
+      width: 100%;
       margin: 10px 0;
-      border-radius: 10px;
+      padding: 10px;
+      background-color: #FFD700;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
     }
-
-    .option:hover {
-      background-color: #FFC107;
-    }
-
     .progress-bar {
+      width: 100%;
       height: 30px;
-      background: #fff;
-      border-radius: 20px;
-      margin-top: 20px;
+      background-color: #eee;
+      border-radius: 15px;
       overflow: hidden;
-      position: relative;
+      margin-top: 20px;
     }
-
-    .progress-fill {
+    .progress {
       height: 100%;
-      background: linear-gradient(to right, #FFA500, #FF4500);
-      width: 0%;
-      transition: width 0.4s;
+      width: 0;
+      background-color: #FFD700;
+      border-radius: 15px;
+      transition: width 0.3s ease-in-out;
     }
-
-    .milho-icon {
-      position: absolute;
-      top: -12px;
-      left: 0;
-      width: 30px;
-    }
-
-    #btnSaque {
+    #prize {
       display: none;
       margin-top: 20px;
-      padding: 10px 20px;
-      background-color: green;
+    }
+    #prize button {
+      background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    @media (max-width: 480px) {
-      .quiz-container {
-        padding: 15px;
-      }
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-
   <div class="quiz-container">
-    <h1>🎉 Quiz Junino 🎉</h1>
-    <div class="question" id="question">Qual é o prato típico mais famoso da festa junina?</div>
-    <div class="option" onclick="verificarResposta(true)">Canjica</div>
-    <div class="option" onclick="verificarResposta(false)">Sushi</div>
-    <div class="option" onclick="verificarResposta(false)">Feijoada</div>
-    <div class="option" onclick="verificarResposta(false)">Hambúrguer</div>
-
+    <h1>Quiz Junino - Teste seus Saberes!</h1>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
     <div class="progress-bar">
-      <img src="https://i.imgur.com/gXoG1ZJ.png" class="milho-icon" id="milhoIcon">
-      <div class="progress-fill" id="progressFill"></div>
+      <div class="progress" id="progress"></div>
     </div>
-
-    <button id="btnSaque" onclick="alert('Parabéns! Você ganhou R$ 297,00 🎁')">Sacar Prêmio</button>
+    <div id="prize">
+      <p>🎉 Parabéns! Você ganhou R$297,00!</p>
+      <button onclick="sacarPremio()">Sacar Prêmio</button>
+    </div>
   </div>
 
   <script>
-    let progresso = 0;
+    const perguntas = [
+      { q: 'Qual é o prato típico mais famoso da festa junina?', a: 'Canjica', o: ['Feijoada', 'Canjica', 'Sushi', 'Hambúrguer'] },
+      { q: 'Qual desses itens é usado na decoração junina?', a: 'Bandeirinhas coloridas', o: ['Bola de Natal', 'Abóbora de Halloween', 'Bandeirinhas coloridas', 'Fitas de cetim'] },
+      { q: 'Qual dança é tradicional nas festas juninas?', a: 'Quadrilha', o: ['Samba', 'Quadrilha', 'Axé', 'Forró eletrônico'] },
+      { q: 'Qual símbolo representa a fogueira?', a: 'Festa de São João', o: ['Festa de São João', 'Carnaval', 'Halloween', 'Páscoa'] },
+      { q: 'Qual mês é comemorado o São João?', a: 'Junho', o: ['Janeiro', 'Junho', 'Setembro', 'Dezembro'] },
+      { q: 'Qual traje típico é comum nas festas juninas?', a: 'Camisa xadrez e chapéu de palha', o: ['Smoking', 'Camisa xadrez e chapéu de palha', 'Roupa de banho', 'Terno branco'] },
+      { q: 'Qual doce é comum nas festas juninas?', a: 'Pé-de-moleque', o: ['Brigadeiro', 'Pé-de-moleque', 'Tiramisu', 'Donut'] },
+      { q: 'O que as pessoas costumam acender nas festas juninas?', a: 'Fogueira', o: ['Lareira', 'Fogo de artifício', 'Fogueira', 'Lampião'] },
+      { q: 'Qual é a origem das festas juninas no Brasil?', a: 'Tradição portuguesa e católica', o: ['Tradição americana', 'Tradição africana', 'Tradição portuguesa e católica', 'Tradição asiática'] },
+      { q: 'Qual bebida típica é servida nas festas juninas?', a: 'Quentão', o: ['Refrigerante', 'Quentão', 'Cerveja', 'Chá gelado'] }
+    ];
 
-    function verificarResposta(correta) {
-      if (correta) {
-        progresso += 25;
-        if (progresso > 100) progresso = 100;
-        document.getElementById('progressFill').style.width = progresso + '%';
-        document.getElementById('milhoIcon').style.left = `calc(${progresso}% - 15px)`;
+    let index = 0;
+    let acertos = 0;
 
-        if (progresso >= 100) {
-          setTimeout(() => {
-            document.getElementById('btnSaque').style.display = 'block';
-            document.getElementById('question').innerText = 'Parabéns! Você completou o quiz!';
-          }, 800);
-        }
+    function carregarPergunta() {
+      const q = perguntas[index];
+      document.getElementById('question').innerText = q.q;
+      const options = document.getElementById('options');
+      options.innerHTML = '';
+      q.o.forEach(option => {
+        const btn = document.createElement('button');
+        btn.innerText = option;
+        btn.onclick = () => verificarResposta(option);
+        options.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(resposta) {
+      if (resposta === perguntas[index].a) acertos++;
+      index++;
+      atualizarBarra();
+      if (index < perguntas.length) {
+        carregarPergunta();
       } else {
-        alert('Resposta errada! Tente outra.');
+        document.getElementById('prize').style.display = 'block';
       }
     }
-  </script>
 
+    function atualizarBarra() {
+      const progresso = document.getElementById('progress');
+      const porcentagem = (acertos / perguntas.length) * 100;
+      progresso.style.width = porcentagem + '%';
+    }
+
+    function sacarPremio() {
+      alert('Você será redirecionado para sacar seu prêmio!');
+      window.location.href = 'pagina-de-saque.html';
+    }
+
+    carregarPergunta();
+  </script>
 </body>
 </html>
